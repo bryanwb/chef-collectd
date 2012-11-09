@@ -58,7 +58,11 @@ bash "make and install" do
   code <<EOF
   make && make install
 EOF
-  not_if { ::File.exists? "/usr/sbin/collectd" }
+  not_if { ::File.exists? "/opt/collectd/sbin/collectd" }
+end
+
+link "/usr/sbin/collectd" do
+  to "/opt/collectd/sbin/collectd"
 end
 
 
