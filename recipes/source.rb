@@ -19,7 +19,7 @@
 
 include_recipe "ark"
 
-node[:collectd][:base_dir] = "/opt/collectd/var/lib/collectd"
+node[:collectd][:base_dir] = "/opt/collectd"
 node[:collectd][:plugin_dir] = "/opt/collectd/lib/collectd"
 node[:collectd][:types_db] = ["/opt/collectd/share/collectd/types.db"]
 
@@ -29,16 +29,36 @@ elsif platform_family? "rhel" and node['platform_version'].to_i > 5
   package "perl-ExtUtils-MakeMaker"
 end
 
+# install deps for compiled plugins if there are any
+unless node[:collectd][:compiled_plugins].empty?
+  include_recipe "collectd::compiled_plugins"
+end
+
 ark "collectd" do
   url node[:collectd][:source_url]
   checksum node[:collectd][:checksum]
   version "5.1"
   prefix_root '/opt'
   prefix_home '/opt'
-  prefix_bin  '/usr/sbin'
-  has_binaries [ 'sbin/collectd' ]
-  creates '/opt/collectd-5.1/sbin/collectd'
-  action [ :configure, :install_with_make ]
+end
+
+#   action [ :configure, :install_with_make ]
+cflags = node['collectd']['cflags'].join(' ')
+
+bash "configure collectd" do
+  cwd  '/opt/collectd'
+  code <<EOF
+  ./configure #{cflags}
+EOF
+  not_if { ::File.exists? "/opt/collectd/config.status" }
+end
+
+bash "make and install" do
+  cwd  '/opt/collectd'
+  code <<EOF
+  make && make install
+EOF
+  not_if { ::File.exists? "/usr/sbin/collectd" }
 end
 
 

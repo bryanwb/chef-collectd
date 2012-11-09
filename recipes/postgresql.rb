@@ -2,8 +2,8 @@
 # if, not fail loudly
 ruby_block "check pg support" do
   block do
-    unless ::File.exists? "/opt/collectd/lib/collectd/postgresql.so"
-      Chef::Application.fatal!("collectd does not have postgresql support compiled in. Check that pg_config and other postgres binaries are in the PATH. If not, you need to reconfigure and recompile collectd.")
+    unless ::File.exists? "#{node[:collectd][:plugin_dir]}/postgresql.so"
+      Chef::Application.fatal!("collectd does not have postgresql support compiled in. Fix it doofus.")
     end
   end
 end

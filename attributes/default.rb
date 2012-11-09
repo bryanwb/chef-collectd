@@ -34,7 +34,8 @@ default[:collectd][:graphite][:prefix] = "collectd."
 default[:collectd][:graphite][:postfix] = ""
 default[:collectd][:graphite][:escape_character] = "_"
 default[:collectd][:graphite][:store_rates] = false
-
+default[:collectd][:compiled_plugins] = []
+default[:collectd][:cflags] = []
 
 default['collectd']['postgresql']['host'] = "localhost"
 default['collectd']['postgresql']['port'] = "5432"
