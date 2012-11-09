@@ -1,0 +1,16 @@
+<LoadPlugin python>
+    Globals true
+</LoadPlugin>
+
+<Plugin python>
+    ModulePath "<%= node[:collectd][:plugin_dir] %>"
+
+    Import "haproxy"
+
+    <Module haproxy>
+      Socket "/var/run/haproxy.sock"
+      ProxyMonitor "server"
+      ProxyMonitor "frontend"
+      ProxyMonitor "backend"
+    </Module>
+</Plugin>       
