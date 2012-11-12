@@ -8,10 +8,9 @@ ruby_block "check collectd's python support" do
   end
 end
 
-remote_file "#{node[:collectd][:plugin_dir]}/haproxy.py" do
-  source "https://github.com/mleinart/collectd-haproxy/blob/master/haproxy.py"
+cookbook_file "#{node[:collectd][:plugin_dir]}/haproxy.py" do
+  source "haproxy.py"
   mode "0644"
-  checksum "ae3a035b420c0008aa465c656c13f465fdc327d97c16ba7e93aa980f638be625"
 end
 
 template "/etc/collectd/plugins/haproxy.conf" do
