@@ -16,5 +16,11 @@ node[:collectd][:compiled_plugins].each do |plugin|
     elsif platform_family? "debian"
       package "python-dev"
     end
+  when /libcurl/
+    if platform_family? "rhel"
+      package "libcurl-devel"
+    elsif platform_family? "debian"
+      package "libcurl-dev"
+    end
   end
 end
