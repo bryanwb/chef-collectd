@@ -1,5 +1,5 @@
 LoadPlugin "java"
-TypesDB "/etc/collectd/plugins/jmx-types.db"
+TypesDB "/etc/collectd/plugins/generic_jmx_types.db"
 
 # all this to get rid of extra quotes that 
 # the tomcat mbean passes
@@ -52,20 +52,20 @@ PreCacheChain "unquote"
     </MBean>
 
 # Heap memory usage
-<MBean "memory_heap">
-  ObjectName "java.lang:type=Memory"
-  #InstanceFrom ""
-  InstancePrefix "memory-heap"
+   <MBean "memory_heap">
+           ObjectName "java.lang:type=Memory"
+           #InstanceFrom ""
+             InstancePrefix "memory-heap"
 
-  # Creates four values: committed, init, max, used
-  <Value>
-    Type "jmx_memory"
-    #InstancePrefix ""
-    #InstanceFrom ""
-    Table true
-    Attribute "HeapMemoryUsage"
-  </Value>
-</MBean>
+           # Creates four values: committed, init, max, used
+           <Value>
+               Type "jmx_memory"
+                #InstancePrefix ""
+                #InstanceFrom ""
+                Table true
+                Attribute "HeapMemoryUsage"
+           </Value>
+   </MBean>
 
 # Non-heap memory usage
 <MBean "memory_nonheap">
@@ -134,7 +134,7 @@ PreCacheChain "unquote"
     Table false
     Attribute "currentThreadsBusy"
   </Value>
-
+</MBean>
 
 <MBean "garbage_collector">
   ObjectName "java.lang:type=GarbageCollector,*"
@@ -143,7 +143,7 @@ PreCacheChain "unquote"
 
   <Value>
     Type "invocations"
-    ePrefPrefPrefix ""
+    InstancePrefix ""
     #InstanceFrom ""
     Table false
     Attribute "CollectionCount"
@@ -159,7 +159,7 @@ PreCacheChain "unquote"
 
  </MBean>
 
-<MBean "classes">
+    <MBean "classes">
       ObjectName "java.lang:type=ClassLoading"
       InstancePrefix "classes"
       #InstanceFrom ""
@@ -190,7 +190,7 @@ PreCacheChain "unquote"
 
 
     <Connection>
-      Host "hqldvtcdrlray2.hq.un.fao.org"
+      Host "<%= node[:fqdn] %>"
       ServiceURL "service:jmx:rmi:///jndi/rmi://localhost:8999/jmxrmi"
       Collect "memory_pool"
       Collect "memory_heap"
@@ -200,7 +200,8 @@ PreCacheChain "unquote"
       Collect "garbage_collector"
       Collect "compilation"
       Collect "classes"
-      User "readwrite"
+      User "controlRole"
       Password "readwrite"
     </Connection>
   </Plugin>
+</Plugin>
