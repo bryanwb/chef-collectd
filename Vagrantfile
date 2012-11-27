@@ -21,8 +21,7 @@ Vagrant::Config.run do |config|
     chef.run_list = [
                      "recipe[collectd]",
                      "recipe[java]",
-                     "recipe[collectd::jmx]",
-                     "recipe[collectd::test]"
+                     "recipe[collectd::jmx]"
                     ]
   end
 end
