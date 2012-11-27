@@ -1,4 +1,5 @@
 metadata
+cookbook 'ark'
 
 group :dev do
   cookbook 'java'

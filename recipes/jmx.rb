@@ -11,6 +11,7 @@ template "/etc/collectd/plugins/generic_jmx.conf" do
   mode "0644"
   notifies :restart, resources(:service => "collectd")
   variables( :user => node['collectd']['jmx']['user'],
-             :password => node['collectd']['jmx']['password'] )
+             :password => node['collectd']['jmx']['password'],
+             :jvm_name => "")
 end
 

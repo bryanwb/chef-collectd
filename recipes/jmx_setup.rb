@@ -1,8 +1,16 @@
 # the configure script fails unless JAVA_HOME terminates with "/"
 # super weird!
-java_home = ENV['JAVA_HOME'].dup
-java_home = "#{java_home}/" unless java_home[-1] == '/'
 
+if ENV['JAVA_HOME']
+  java_home = ENV['JAVA_HOME'].dup
+  java_home = "#{java_home}/" unless java_home[-1] == '/'
+elsif node['java']['java_home']
+  java_home =node['java']['java_home'].dup
+  java_home = "#{java_home}/" unless java_home[-1] == '/'
+else
+  Chef::Application.fatal!("Can't find JAVA_HOME, bailing out")
+end
+  
 bash "recompile-collectd" do
   code <<-EOF
   cd /opt/collectd
