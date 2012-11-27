@@ -68,6 +68,21 @@ cookbook_file File.join(node[:collectd][:plugin_dir], "redis.py") do
 end
 ```
 
+# generic JMX template lwrp #
+
+
+```ruby
+
+collectd_jmx "liferay1" do
+  port  "8999"
+  user  "monitoringRole
+  password "foo"
+  tomcat true
+end
+
+```
+
+
 ## Web frontend ##
 
 The `collectd::collectd_web` recipe will automatically deploy the [collectd_web](https://github.com/httpdss/collectd-web) frontend using Apache. The 

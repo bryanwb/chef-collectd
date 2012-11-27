@@ -15,6 +15,6 @@ attribute :jvm_name, :kind_of => String, :default => ""
 
 def initialize(*args)
   super
-  @action = :install
+  @action ||= :install
 end
 

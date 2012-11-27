@@ -41,3 +41,5 @@ default['collectd']['postgresql']['host'] = "localhost"
 default['collectd']['postgresql']['port'] = "5432"
 default['collectd']['postgresql']['username'] = ""
 default['collectd']['postgresql']['password'] = ""
+
+default['collectd']['jmx'] = { 'user' => '', 'password' => '' }

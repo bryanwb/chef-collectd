@@ -7,7 +7,7 @@ include Chef::Mixin::LanguageIncludeRecipe
 
 action :install do
 
-  include_recipe "collectd::generic_jmx_setup"
+  include_recipe "collectd::jmx_setup"
 
   template "/etc/collectd/plugins/#{new_resource.name}.conf" do
     source new_resource.template
