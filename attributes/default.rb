@@ -25,8 +25,8 @@ default[:collectd][:read_threads] = 5
 default[:collectd][:install_method] = "package"
 default[:collectd][:collectd_web][:path] = "/srv/collectd_web"
 default[:collectd][:collectd_web][:hostname] = "collectd"
-default[:collectd][:source_url] = 'http://collectd.org/files/collectd-5.1.0.tar.bz2'
-default[:collectd][:checksum] = '521d4be7df5bc1124b7b9ea88227e95839a5f7c1b704a5bde0f60f058ec6eecb'
+default[:collectd][:source_url] = 'http://collectd.org/files/collectd-5.1.1.tar.bz2'
+default[:collectd][:checksum] = '0eeb8e45c83ba13fa00bd4f6875528e8a13769ba218205785d40b861489bf1fd'
 
 default[:collectd][:graphite][:host] = "localhost"
 default[:collectd][:graphite][:port] = "2003"
