@@ -33,12 +33,6 @@ package "collectd" do
 else
   include_recipe "collectd::source"
 end
-  
-directory "/etc/collectd" do
-  owner "root"
-  group "root"
-  mode "755"
-end
 
 directory "/etc/collectd/plugins" do
   owner "root"
@@ -50,7 +44,6 @@ end
 directory node[:collectd][:base_dir] do
   owner "root"
   group "root"
-  mode "755"
   mode 00755
   recursive true
 end
