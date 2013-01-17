@@ -9,5 +9,6 @@ LoadPlugin write_graphite
    StoreRates <%= node[:collectd][:graphite][:store_rates] %>
    AlwaysAppendDS false
    EscapeCharacter "<%= node[:collectd][:graphite][:escape_character] %>"
+   SeparateInstances <%= node[:collectd][:graphite][:separate_instances] %>
  </Carbon>
 </Plugin>

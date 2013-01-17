@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: collectd
-# Recipe:: jmx
+# Recipe:: base_plugins
 #
 # Copyright 2012, Bryan W. Berry
 #
@@ -17,20 +17,9 @@
 # limitations under the License.
 #
 
-include_recipe "collectd::jmx_setup"
+# This recipe installs the most frequently used plugins without
+# any special configuration
 
-if !Chef::Config[:solo] && node['collectd']['jmx']['authenticate'] == true
-  jmx_creds = Chef::EncryptedDataBagItem.load('stash', 'jmx')
-  node['collectd']['jmx']['user'] = jmx_creds['user']
-  node['collectd']['jmx']['password'] = jmx_creds['password']
+node['collectd']['base_plugins'].each do |plugin|
+  collectd_plugin plugin
 end
-
-template "/etc/collectd/plugins/generic_jmx.conf" do
-  source "generic_jmx.conf.erb"
-  mode 00644
-  notifies :restart, resources(:service => "collectd")
-  variables( :user => node['collectd']['jmx']['user'],
-             :password => node['collectd']['jmx']['password'],
-             :jvm_name => "")
-end
-
