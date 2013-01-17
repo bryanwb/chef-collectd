@@ -1,3 +1,4 @@
+name             "collectd"
 maintainer       "Noan Kantrowitz"
 maintainer_email "noah@coderanger.net"
 name             "collectd"
