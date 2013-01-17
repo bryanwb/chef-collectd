@@ -71,15 +71,15 @@ if node['platform_version'].to_i < 6 and platform_family? "rhel"
     source "collectd.init.el.erb"
     owner "root"
     group "root"
-    mode "755"
-    notifies :restart, resources(:service => "collectd")
+    mode 00755
+    notifies :restart, "service[collectd]"
   end
 else
   template "/etc/init/collectd.conf" do
     source "collectd.upstart.conf.erb"
     owner "root"
     group "root"
-    mode "755"
-    notifies :restart, resources(:service => "collectd")
+    mode 00755
+    notifies :restart, "service[collectd]"
   end
 end

@@ -21,7 +21,7 @@ define :collectd_plugin, :options => {}, :template => nil, :cookbook => nil do
   template "/etc/collectd/plugins/#{params[:name]}.conf" do
     owner "root"
     group "root"
-    mode "644"
+    mode 00644
     if params[:template].nil?
       source "plugin.conf.erb"
       cookbook params[:cookbook] || "collectd"

@@ -29,11 +29,11 @@ end
 
 cookbook_file "#{node[:collectd][:plugin_dir]}/haproxy.py" do
   source "haproxy.py"
-  mode "0644"
+  mode 00644
 end
 
 template "/etc/collectd/plugins/haproxy.conf" do
   source "haproxy.conf.erb"
-  mode "0644"
-  notifies :restart, resources(:service => "collectd")
+  mode 00644
+  notifies :restart, "service[collectd]"
 end

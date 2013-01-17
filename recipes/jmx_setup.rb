@@ -42,6 +42,6 @@ end
 
 template "/etc/collectd/plugins/generic_jmx_types.db" do
   source "generic_jmx_types.db.erb"
-  mode "0644"
+  mode 00644
   notifies :restart, resources(:service => "collectd")
 end

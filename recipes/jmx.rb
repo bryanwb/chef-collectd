@@ -27,7 +27,7 @@ end
 
 template "/etc/collectd/plugins/generic_jmx.conf" do
   source "generic_jmx.conf.erb"
-  mode "0644"
+  mode 00644
   notifies :restart, resources(:service => "collectd")
   variables( :user => node['collectd']['jmx']['user'],
              :password => node['collectd']['jmx']['password'],
