@@ -24,4 +24,5 @@ template "/etc/collectd/plugins/write_graphite.conf" do
   owner "root"
   group "root"
   mode 00755
+  notifies :restart, "service[collectd]"
 end
