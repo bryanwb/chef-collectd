@@ -1,3 +1,4 @@
+name             "collectd"
 maintainer       "Noan Kantrowitz"
 maintainer_email "noah@coderanger.net"
 name             "collectd"
@@ -6,7 +7,6 @@ description      "Install and configure the collectd monitoring daemon"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          "1.0.6"
 
-%w{ debian ubuntu centos redhat fedora }.each do |os|
+%w{ debian ubuntu centos scientific amazon oracle redhat fedora }.each do |os|
   supports os
 end
-

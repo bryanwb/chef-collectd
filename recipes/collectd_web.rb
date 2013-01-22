@@ -27,7 +27,7 @@ end
 directory node[:collectd][:collectd_web][:path] do
   owner "root"
   group "root"
-  mode "755"
+  mode 00755
 end
 
 bash "install_collectd_web" do
@@ -47,7 +47,7 @@ template "/etc/apache2/sites-available/collectd_web.conf" do
   source "collectd_web.conf.erb"
   owner "root"
   group "root"
-  mode "644"
+  mode 00644
 end
 
 apache_site "collectd_web.conf"

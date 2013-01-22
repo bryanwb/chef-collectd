@@ -14,7 +14,7 @@ action :install do
     owner "root"
     group "root"
     cookbook new_resource.cookbook
-    mode 0755
+    mode 00755
     variables( :port => new_resource.port,
                :user => new_resource.user,
                :password => new_resource.password,

@@ -33,30 +33,25 @@ package "collectd" do
 else
   include_recipe "collectd::source"
 end
-  
-directory "/etc/collectd" do
-  owner "root"
-  group "root"
-  mode "755"
-end
 
 directory "/etc/collectd/plugins" do
   owner "root"
   group "root"
-  mode "755"
+  mode 00755
+  recursive true
 end
 
 directory node[:collectd][:base_dir] do
   owner "root"
   group "root"
-  mode "755"
+  mode 00755
   recursive true
 end
 
 directory node[:collectd][:plugin_dir] do
   owner "root"
   group "root"
-  mode "755"
+  mode 00755
   recursive true
 end
 
@@ -65,8 +60,8 @@ end
     source "#{file}.conf.erb"
     owner "root"
     group "root"
-    mode "644"
-    notifies :restart, resources(:service => "collectd")
+    mode 00644
+    notifies :restart, "service[collectd]"
   end
 end
 
@@ -92,7 +87,6 @@ ruby_block "delete_old_plugins" do
     end
   end
 end
-
 
 service "collectd" do
   action [:enable, :start]
