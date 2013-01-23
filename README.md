@@ -91,8 +91,12 @@ component, so be sure to configure the node with the correct recipes.
 
 # LICENSE & AUTHOR #
 
-Author:: Noah Kantrowitz (<noah@coderanger.net>)
-Copyright:: 2010, Atari, Inc
+Author:: Noah Kantrowitz (<noah@coderanger.net>)  
+Author:: Bryan W. Berry (<bryan.berry@gmail.com>)  
+Author:: Tim A. Smith (<tsmith84@gmail.com>)  
+Copyright:: 2010, Atari, Inc  
+Copyright:: 2012, Bryan W. Berry  
+Copyright:: 2012, Tim A. Smith
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
