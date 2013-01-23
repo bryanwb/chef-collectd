@@ -34,6 +34,12 @@ else
   include_recipe "collectd::source"
 end
 
+directory "/etc/collectd" do
+  owner "root"
+  group "root"
+  mode 00755
+end
+
 directory "/etc/collectd/plugins" do
   owner "root"
   group "root"
