@@ -4,7 +4,7 @@ Configure and install the [collectd](http://collectd.org/) monitoring daemon.
 
 # REQUIREMENTS #
 
-This cookbook has only been tested on Ubuntu 10.04.
+This cookbook has only been tested on Ubuntu 10.04 and Ubuntu 12.04
 
 To use the `collectd::collectd_web` recipe you need the [apache2](https://github.com/opscode/cookbooks/tree/master/apache2) cookbook.
 
@@ -12,21 +12,20 @@ The [collectd_plugins](#) cookbook is not required, but provides many common plu
 
 # ATTRIBUTES #
 
-* collectd.basedir - Base folder for collectd output data.
-* collectd.plugin_dir - Base folder to find plugins.
-* collectd.types_db - Array of files to read graph type information from.
-* collectd.interval - Time period in seconds to wait between data reads.
-
-* collectd.collectd_web.path - Location to install collectd_web to. Defaults to /srv/collectd_web.
-* collectd.collectd_web.hostname - Server name to use for collectd_web Apache site.
+* `collectd.basedir` - Base folder for collectd output data.
+* `collectd.plugin_dir` - Base folder to find plugins.
+* `collectd.types_db` - Array of files to read graph type information from.
+* `collectd.interval` - Time period in seconds to wait between data reads.
+* `collectd.collectd_web.path` - Location to install collectd_web to. Defaults to /srv/collectd_web.
+* `collectd.collectd_web.hostname` - Server name to use for collectd_web Apache site.
 
 # USAGE #
 
 Three main recipes are provided:
 
-* collectd - Install a standalone daemon.
-* collectd::client - Install collectd and configure it to send data to a server.
-* collectd::server - Install collectd and configure it to recieve data from clients.
+* `collectd` - Install a standalone daemon.
+* `collectd::client` - Install collectd and configure it to send data to a server.
+* `collectd::server` - Install collectd and configure it to recieve data from clients.
 
 The client recipe will use the search index to automatically locate the server hosts, so no manual configuration is required.
 
@@ -64,7 +63,7 @@ or other mechanism to handle distribution. Example:
 cookbook_file File.join(node[:collectd][:plugin_dir], "redis.py") do
   owner "root"
   group "root"
-  mode "644"
+  mode 0644
 end
 ```
 
