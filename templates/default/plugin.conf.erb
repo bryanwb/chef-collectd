@@ -4,8 +4,8 @@ LoadPlugin "<%= @name %>"
 
 <% if not @options.empty? %>
 <Plugin "<%= @name %>">
-  <% @options.each_pair do |key, value|
-    if value.is_a? Array 
+  <% @options.each do |key,value|
+    if value.is_a? Array
       value.each do |subvalue| %>
   <%= collectd_key(key) %> <%= collectd_option(subvalue) %>
   <% end else %>
