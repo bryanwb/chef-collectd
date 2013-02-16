@@ -45,3 +45,6 @@ default['collectd']['postgresql']['username'] = ""
 default['collectd']['postgresql']['password'] = ""
 
 default['collectd']['jmx'] = { 'user' => '', 'password' => '' }
+
+default['collectd']['haproxy']['stats_socket'] = "/var/lib/haproxy/stats"
+

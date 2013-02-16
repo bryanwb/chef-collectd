@@ -44,7 +44,7 @@ METRIC_TYPES = {
 
 METRIC_DELIM = '.' # for the frontend/backend stats
 
-DEFAULT_SOCKET = '/var/lib/haproxy/stats'
+DEFAULT_SOCKET = '<%= @stats_socket %>'
 DEFAULT_PROXY_MONITORS = [ 'server', 'frontend', 'backend' ]
 VERBOSE_LOGGING = False
 
