@@ -27,9 +27,12 @@ ruby_block "check collectd's python support" do
   end
 end
 
-cookbook_file "#{node[:collectd][:plugin_dir]}/haproxy.py" do
-  source "haproxy.py"
+template "#{node[:collectd][:plugin_dir]}/haproxy.py" do
+  source "haproxy.py.erb"
   mode 00644
+  variables(
+    :stats_socket => node['collectd']['haproxy']['stats_socket']
+  )
 end
 
 template "/etc/collectd/plugins/haproxy.conf" do
