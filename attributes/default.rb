@@ -25,8 +25,8 @@ default['collectd']['read_threads'] = 5
 default['collectd']['install_method'] = "package"
 default['collectd']['collectd_web']['path'] = "/srv/collectd_web"
 default['collectd']['collectd_web']['hostname'] = "collectd"
-default['collectd']['source_url'] = 'http://collectd.org/files/collectd-5.1.1.tar.bz2'
-default['collectd']['checksum'] = '0eeb8e45c83ba13fa00bd4f6875528e8a13769ba218205785d40b861489bf1fd'
+default['collectd']['source_url'] = 'http://collectd.org/files/collectd-5.1.2.tar.bz2'
+default['collectd']['checksum'] = 'e280932198b91703c2c7daae4dc21cd1ccc94449d23e4a23f4b1ad4bf0e61de2'
 default['collectd']['base_plugins'] = %w{cpu interface load memory network df disk}
 
 default['collectd']['graphite']['host'] = "localhost"
@@ -45,3 +45,6 @@ default['collectd']['postgresql']['username'] = ""
 default['collectd']['postgresql']['password'] = ""
 
 default['collectd']['jmx'] = { 'user' => '', 'password' => '' }
+
+default['collectd']['haproxy']['stats_socket'] = "/var/lib/haproxy/stats"
+
