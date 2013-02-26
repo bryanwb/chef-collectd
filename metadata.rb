@@ -10,3 +10,5 @@ version          "1.0.6"
 %w{ debian ubuntu centos scientific amazon oracle redhat fedora }.each do |os|
   supports os
 end
+
+depends "python"
