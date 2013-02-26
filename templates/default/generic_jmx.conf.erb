@@ -2,7 +2,7 @@ LoadPlugin "java"
 TypesDB "/etc/collectd/plugins/generic_jmx_types.db"
 
 <% if @tomcat == true -%>
-# all this to get rid of extra quotes that 
+# all this to get rid of extra quotes that
 # the tomcat mbean passes
 LoadPlugin "match_regex"
 LoadPlugin "target_replace"
@@ -30,7 +30,11 @@ PreCacheChain "unquote"
 
 <Plugin "java">
   JVMArg "-verbose:jni"
+  <% if node['collectd']['install_method'] == "package" -%>
+  JVMArg "-Djava.class.path=/usr/share/collectd/java/collectd-api.jar:/usr/share/collectd/java/generic-jmx.jar"
+  <% else -%>
   JVMArg "-Djava.class.path=/opt/collectd/bindings/java/.libs/collectd-api.jar:/opt/collectd/bindings/java/.libs/generic-jmx.jar"
+  <% end -%>
   LoadPlugin "org.collectd.java.GenericJMX"
 
   <Plugin "GenericJMX">
@@ -134,7 +138,7 @@ PreCacheChain "unquote"
     </MBean>
 
 
-    
+
 <% if @tomcat == true -%>
 
     <MBean "catalina/global_request_processor">
