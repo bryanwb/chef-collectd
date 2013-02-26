@@ -4,7 +4,8 @@ Configure and install the [collectd](http://collectd.org/) monitoring daemon.
 
 # REQUIREMENTS #
 
-This cookbook has only been tested on Ubuntu 10.04 and Ubuntu 12.04
+* Ubuntu 10.04 / 12.04
+* RHEL 6 (or equivalent)
 
 To use the `collectd::collectd_web` recipe you need the [apache2](https://github.com/opscode/cookbooks/tree/master/apache2) cookbook.
 
@@ -12,12 +13,17 @@ The [collectd_plugins](#) cookbook is not required, but provides many common plu
 
 # ATTRIBUTES #
 
-* `collectd.basedir` - Base folder for collectd output data.
-* `collectd.plugin_dir` - Base folder to find plugins.
-* `collectd.types_db` - Array of files to read graph type information from.
-* `collectd.interval` - Time period in seconds to wait between data reads.
-* `collectd.collectd_web.path` - Location to install collectd_web to. Defaults to /srv/collectd_web.
-* `collectd.collectd_web.hostname` - Server name to use for collectd_web Apache site.
+* `default['collectd']['basedir']` - Base folder for collectd output data.
+* `default['collectd']['plugin_dir']` - Base folder to find plugins.
+* `default['collectd']['types_db']` - Array of files to read graph type information from.
+* `default['collectd']['interval']` - Time period in seconds to wait between data reads.
+* `default['collectd']['read_threads']` - Number of threads for file reads
+* `default['collectd']['install_method']` - Method to install collectd.  Defaults to package
+* `default['collectd']['collectd_web']['path']` - Location to install collectd_web to. Defaults to /srv/collectd_web.
+* `default['collectd']['collectd_web']['hostname']` - Server name to use for collectd_web Apache site.
+* `default['collectd']['source_url']` - URL to download the collectd source from
+* `default['collectd']['checksum'] ` - Checksum of the source tar.bz2 file
+* `default['collectd']['base_plugins']` - Plugins to load through the `collect::base_plugins` recipe
 
 # USAGE #
 
