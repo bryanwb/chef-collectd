@@ -29,7 +29,7 @@ define :collectd_plugin, :options => {}, :template => nil, :cookbook => nil do
       source params[:template]
       cookbook params[:cookbook]
     end
-    variables :name=>params[:name], :options=>params[:options]
+    variables :name=>params[:name], :options=>params[:options].sort_by {|k,v| k.to_s }
     notifies :restart, "service[collectd]"
   end
 end
