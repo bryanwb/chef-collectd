@@ -47,3 +47,5 @@ default['collectd']['postgresql']['password'] = ""
 default['collectd']['jmx'] = { 'user' => '', 'password' => '' }
 default['collectd']['haproxy']['stats_socket'] = "/var/lib/haproxy/stats"
 
+default['collectd']['syslog']['log_level'] = "info"
+
