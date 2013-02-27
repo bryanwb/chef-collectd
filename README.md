@@ -17,7 +17,7 @@ The [collectd_plugins](#) cookbook is not required, but provides many common plu
 * `default['collectd']['plugin_dir']` - Base folder to find plugins.
 * `default['collectd']['types_db']` - Array of files to read graph type information from.
 * `default['collectd']['interval']` - Time period in seconds to wait between data reads.
-* `default['collectd']['read_threads']` - Number of threads for file reads
+* `default['collectd']['read_threads']` - Number of threads for reading plugins - Defaults to 5
 * `default['collectd']['install_method']` - Method to install collectd.  Defaults to package
 * `default['collectd']['collectd_web']['path']` - Location to install collectd_web to. Defaults to /srv/collectd_web.
 * `default['collectd']['collectd_web']['hostname']` - Server name to use for collectd_web Apache site.
