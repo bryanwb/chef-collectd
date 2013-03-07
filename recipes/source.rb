@@ -30,13 +30,13 @@ elsif platform_family? "rhel" and node['platform_version'].to_i > 5
 end
 
 # install deps for compiled plugins if there are any
-unless node[:collectd][:compiled_plugins].empty?
+unless node['collectd']['compiled_plugins'].empty?
   include_recipe "collectd::compiled_plugins"
 end
 
 ark "collectd" do
-  url node[:collectd][:source_url]
-  checksum node[:collectd][:checksum]
+  url node['collectd']['source_url']
+  checksum node['collectd']['checksum']
   version "5.1.1"
   prefix_root '/opt'
   prefix_home '/opt'
