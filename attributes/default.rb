@@ -25,8 +25,9 @@ default['collectd']['read_threads'] = 5
 default['collectd']['install_method'] = "package"
 default['collectd']['collectd_web']['path'] = "/srv/collectd_web"
 default['collectd']['collectd_web']['hostname'] = "collectd"
-default['collectd']['source_url'] = 'http://collectd.org/files/collectd-5.1.1.tar.bz2'
-default['collectd']['checksum'] = '0eeb8e45c83ba13fa00bd4f6875528e8a13769ba218205785d40b861489bf1fd'
+default['collectd']['version'] = '5.2.1'
+default['collectd']['source_url'] = "http://collectd.org/files/collectd-#{node['collectd']['version']}.tar.gz"
+default['collectd']['checksum'] = '55fa3659218cafc57175fe7b9a67fff71519280ad02f8830e78e6fb642a3dbc9'
 default['collectd']['base_plugins'] = %w{cpu interface load memory network df disk}
 
 default['collectd']['graphite']['host'] = "localhost"

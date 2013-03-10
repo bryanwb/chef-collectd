@@ -37,7 +37,7 @@ end
 ark "collectd" do
   url node['collectd']['source_url']
   checksum node['collectd']['checksum']
-  version "5.1.1"
+  version node['collectd']['version']
   prefix_root '/opt'
   prefix_home '/opt'
 end
@@ -46,7 +46,7 @@ end
 cflags = node['collectd']['cflags'].join(' ')
 
 bash "configure collectd" do
-  cwd  '/opt/collectd-5.1.1'
+  cwd  "/opt/collectd-#{node['collectd']['version']}"
   code <<EOF
   ./configure #{cflags}
 EOF
@@ -58,7 +58,7 @@ bash "make and install" do
   code <<EOF
   make && make install
 EOF
-  not_if { ::File.exists? "/opt/collectd-5.1.1/sbin/collectd" }
+  not_if { ::File.exists? "/opt/collectd-#{node['collectd']['version']}/sbin/collectd" }
 end
 
 link "/usr/sbin/collectd" do
