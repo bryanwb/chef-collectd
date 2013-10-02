@@ -25,5 +25,12 @@ collectd_plugin 'logfile' do
 end
 
 node['collectd']['base_plugins'].each do |plugin|
-  collectd_plugin plugin
+  collectd_plugin plugin do
+    case plugin
+    when 'interface'
+      options :Interface => 'lo', :IgnoreSelected => true
+    when 'df'
+      options :MountPoint => '/var*|lib*|dev*|run*/', :IgnoreSelected => true
+    end
+  end
 end
