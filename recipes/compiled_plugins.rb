@@ -29,11 +29,14 @@ node[:collectd][:compiled_plugins].each do |plugin|
     elsif platform_family? 'debian'
       package "postgresql-server-dev-#{node['postgresql']['version']}"
     end
-  when "python"
-    if platform_family? "rhel"
-      package "python-devel"
-    elsif platform_family? "debian"
-      package "python-dev"
+  when 'python'
+    if platform_family? 'rhel'
+      %w{ python26 python26-devel python26-libs python26-devel}.each do |pkg|
+        package pkg
+      end
+      node.set['collectd']['cflags'] = ['--with-python=/usr/bin/python26']
+    elsif platform_family? 'debian'
+      package 'python-dev'
     end
   when /libcurl/
     if platform_family? 'rhel'
