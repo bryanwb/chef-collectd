@@ -17,8 +17,8 @@
 # limitations under the License.
 #
 
-template "/etc/collectd/plugins/httpd.conf" do
-  source "httpd.conf.erb"
+template '/etc/collectd/plugins/httpd.conf' do
+  source 'httpd.conf.erb'
   mode 00644
-  notifies :restart, "service[collectd]"
+  notifies :restart, 'service[collectd]'
 end

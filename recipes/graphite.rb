@@ -19,10 +19,10 @@
 
 # this recipe configures the graphite plugin
 
-template "/etc/collectd/plugins/write_graphite.conf" do
-  source "graphite.conf.erb"
-  owner "root"
-  group "root"
+template '/etc/collectd/plugins/write_graphite.conf' do
+  source 'graphite.conf.erb'
+  owner 'root'
+  group 'root'
   mode 00644
-  notifies :restart, "service[collectd]"
+  notifies :restart, 'service[collectd]'
 end

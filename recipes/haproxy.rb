@@ -22,7 +22,7 @@
 ruby_block "check collectd's python support" do
   block do
     unless ::File.exists? "#{node[:collectd][:plugin_dir]}/python.so"
-      Chef::Application.fatal!("collectd does not have python support compiled in. Fix it doofus.")
+      Chef::Application.fatal!('collectd does not have python support compiled in. Fix it doofus.')
     end
   end
 end
@@ -31,15 +31,16 @@ end
 include_recipe "python::default"
 
 template "#{node[:collectd][:plugin_dir]}/haproxy.py" do
-  source "haproxy.py.erb"
+  source 'haproxy.py.erb'
   mode 00755
   variables(
     :stats_socket => node['collectd']['haproxy']['stats_socket']
   )
+  notifies :restart, 'service[collectd]'
 end
 
-template "/etc/collectd/plugins/haproxy.conf" do
-  source "haproxy.conf.erb"
+template '/etc/collectd/plugins/haproxy.conf' do
+  source 'haproxy.conf.erb'
   mode 00644
-  notifies :restart, "service[collectd]"
+  notifies :restart, 'service[collectd]'
 end

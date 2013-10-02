@@ -17,6 +17,6 @@
 # limitations under the License.
 #
 
-collectd_plugin "nginx" do
-  options :URL => "http://127.0.0.1/nginx_status"
+collectd_plugin 'nginx' do
+  options :URL => 'http://127.0.0.1/nginx_status'
 end

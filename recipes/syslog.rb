@@ -20,6 +20,6 @@
 # This recipe installs the most frequently used plugins without
 # any special configuration
 
-collectd_plugin "syslog" do
+collectd_plugin 'syslog' do
   options :LogLevel => node['collectd']['syslog']['log_level']
 end

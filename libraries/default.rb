@@ -18,7 +18,7 @@
 #
 
 def collectd_key(option)
-  return option.to_s.split('_').map{|x| x.capitalize}.join() if option.instance_of?(Symbol)
+  return option.to_s.split('_').map{|x| x.capitalize}.join if option.instance_of?(Symbol)
   "#{option}"
 end
 

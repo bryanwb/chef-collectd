@@ -17,6 +17,6 @@
 # limitations under the License.
 #
 
-collectd_plugin "memcached" do
-  options :Host => "127.0.0.1", :Port => "11211"
+collectd_plugin 'memcached' do
+  options :Host => '127.0.0.1', :Port => '11211'
 end

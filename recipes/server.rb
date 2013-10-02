@@ -17,8 +17,8 @@
 # limitations under the License.
 #
 
-include_recipe "collectd"
+include_recipe 'collectd'
 
-collectd_plugin "network" do
+collectd_plugin 'network' do
   options :listen=>'0.0.0.0'
 end

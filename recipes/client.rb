@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe "collectd"
+include_recipe 'collectd'
 
 servers = []
 search(:node, 'recipes:"collectd::server"') do |n|
@@ -25,9 +25,9 @@ search(:node, 'recipes:"collectd::server"') do |n|
 end
 
 if servers.empty?
-  raise "No servers found. Please configure at least one node with collectd::server."
+  raise 'No servers found. Please configure at least one node with collectd::server.'
 end
 
-collectd_plugin "network" do
+collectd_plugin 'network' do
   options :server=>servers
 end

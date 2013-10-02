@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe "collectd::jmx_setup"
+include_recipe 'collectd::jmx_setup'
 
 if !Chef::Config[:solo] && node['collectd']['jmx']['authenticate'] == true
   jmx_creds = Chef::EncryptedDataBagItem.load('stash', 'jmx')
