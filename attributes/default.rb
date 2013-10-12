@@ -51,7 +51,11 @@ default['collectd']['postgresql']['port'] = 5432
 default['collectd']['postgresql']['username'] = ''
 default['collectd']['postgresql']['password'] = ''
 
-default['collectd']['jmx'] = { 'user' => '', 'password' => '' }
 default['collectd']['haproxy']['stats_socket'] = '/var/lib/haproxy/stats'
 
 default['collectd']['syslog']['log_level'] = 'info'
+
+default['collectd']['encrypted_databag'] = 'basics'
+default['collectd']['encrypted_databag_item'] = 'secrets'
+
+default['collectd']['jmx']['ignored_role_strings'] = %w{ _jobs _ro _sjc _iad _phx }
