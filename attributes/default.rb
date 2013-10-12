@@ -19,7 +19,7 @@
 
 default['collectd']['base_dir'] = '/var/lib/collectd'
 default['collectd']['plugin_dir'] = '/usr/lib/collectd'
-default['collectd']['types_db'] = [ '/usr/share/collectd/types.db' ]
+default['collectd']['types_db'] = %w{ /usr/share/collectd/types.db }
 default['collectd']['interval'] = 10
 default['collectd']['read_threads'] = 5
 case node['platform_family']
@@ -28,12 +28,15 @@ when 'debian'
 else
   default['collectd']['install_method'] = 'source'
 end
-default['collectd']['collectd_web']['path'] = '/srv/collectd_web'
-default['collectd']['collectd_web']['hostname'] = 'collectd'
 default['collectd']['version'] = '5.4.0'
 default['collectd']['source_url'] = "http://collectd.org/files/collectd-#{node['collectd']['version']}.tar.gz"
 default['collectd']['checksum'] = 'c434548789d407b00f15c361305766ba4e36f92ccf2ec98d604aab2a46005239'
 default['collectd']['base_plugins'] = %w{cpu interface load memory network df disk}
+default['collectd']['compiled_plugins'] = %w{ libcurl python }
+default['collectd']['cflags'] = []
+
+default['collectd']['collectd_web']['path'] = '/srv/collectd_web'
+default['collectd']['collectd_web']['hostname'] = 'collectd'
 
 default['collectd']['graphite']['host'] = 'localhost'
 default['collectd']['graphite']['port'] = 2003
@@ -42,8 +45,6 @@ default['collectd']['graphite']['postfix'] = ''
 default['collectd']['graphite']['escape_character'] = '_'
 default['collectd']['graphite']['store_rates'] = false
 default['collectd']['graphite']['separate_instances'] = false
-default['collectd']['compiled_plugins'] = ['libcurl','python']
-default['collectd']['cflags'] = []
 
 default['collectd']['postgresql']['host'] = 'localhost'
 default['collectd']['postgresql']['port'] = 5432

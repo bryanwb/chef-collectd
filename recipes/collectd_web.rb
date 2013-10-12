@@ -7,9 +7,9 @@
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #     http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,7 +24,7 @@ include_recipe 'apache2'
   package name
 end
 
-directory node[:collectd][:collectd_web][:path] do
+directory node['collectd']['collectd_web']['path'] do
   owner 'root'
   group 'root'
   mode 00755
@@ -32,9 +32,9 @@ end
 
 bash 'install_collectd_web' do
   user 'root'
-  cwd node[:collectd][:collectd_web][:path]
+  cwd node['collectd']['collectd_web']['path']
   not_if do
-    File.exists?(File.join(node[:collectd][:collectd_web][:path], 'index.html'))
+    File.exists?(File.join(node['collectd']['collectd_web']['path'], 'index.html'))
   end
   code <<-EOH
     wget --no-check-certificate -O collectd-web.tar.gz https://github.com/httpdss/collectd-web/tarball/master

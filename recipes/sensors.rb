@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 
-if !node['ec2'] && !node['virtualization']['role']
+# install the sensors cookbook if not on a VM or on EC2
+unless node['ec2'] && node['virtualization']['role']
   collectd_plugin 'sensors'
 end

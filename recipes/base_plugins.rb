@@ -20,10 +20,6 @@
 # This recipe installs the most frequently used plugins without
 # any special configuration
 
-collectd_plugin 'logfile' do
-  options :LogLevel => 'info', :File => '/var/log/collectd.log', :Timestamp => true
-end
-
 node['collectd']['base_plugins'].each do |plugin|
   collectd_plugin plugin do
     case plugin

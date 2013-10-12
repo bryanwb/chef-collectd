@@ -60,9 +60,9 @@ end
 
 bash 'make and install' do
   cwd  '/opt/collectd'
-  code <<EOF
+  code "
   make && make install
-EOF
+"
   not_if { ::File.exists? "/opt/collectd-#{node['collectd']['version']}/sbin/collectd" }
 end
 

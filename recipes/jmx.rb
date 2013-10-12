@@ -19,18 +19,67 @@
 
 include_recipe 'collectd::jmx_setup'
 
-if !Chef::Config[:solo] && node['collectd']['jmx']['authenticate'] == true
-  jmx_creds = Chef::EncryptedDataBagItem.load('stash', 'jmx')
-  node['collectd']['jmx']['user'] = jmx_creds['user']
-  node['collectd']['jmx']['password'] = jmx_creds['password']
+# load the data bag and data bag item that contain the jmx username and password
+secret_data = Chef::EncryptedDataBagItem.load(node['collectd']['encrypted_databag'] , node['collectd']['encrypted_databag_item'])
+
+# load the data bag that includes the ports to use
+ports = data_bag_item('services', 'ports')
+
+# create the basic structure that will hold the aggregate JMX values of all services on the node
+jmx_vals = {
+  'connections' => {},
+  'mbeans' => {}
+}
+
+# attempt to find a JMX data bag item for each role on the node. ignore failures when a role doesn't have a data bag
+node.roles.each do |role|
+
+  # see if the role exists in the ports databag
+  if ports['offset'][role]
+
+    # predefine the structure of the connections section
+    jmx_vals['connections'][role] = {}
+    jmx_vals['connections'][role]['mbeans'] = []
+
+    # attempt to load a databag with the name of the role.  Rescue because failure is normal
+    begin
+      bag = data_bag_item('collectd_metrics', role)['generic_jmx']
+
+      # if any mbeans are defined in the data bag add them to the single list of mbeans to define
+      unless bag['mbeans'].empty?
+        bag['mbeans'].each_pair do |key, val|
+          jmx_vals['mbeans'][key] = val
+          jmx_vals['connections'][role]['mbeans'] << key
+        end
+      end
+    rescue Exception=>e
+    end
+
+    jmx_vals['connections'][role]['port'] = ports['offset'][role] + ports['range']['jmx']
+
+    # load the generic JMX mbeans like heap and gc that every service gets
+    data_bag_item('collectd_metrics', '_generic')['generic_jmx']['mbeans'].each_pair do |key, val|
+      jmx_vals['mbeans'][key] = val
+      jmx_vals['connections'][role]['mbeans'] << key
+    end
+  end
 end
 
-template "/etc/collectd/plugins/generic_jmx.conf" do
-  source "generic_jmx.conf.erb"
-  mode 00644
-  notifies :restart, "service[collectd]"
-  variables( :user => node['collectd']['jmx']['user'],
-             :password => node['collectd']['jmx']['password'],
-             :jvm_name => "")
+# if we didn't find any jmx services on the node then delete the plugin config, otherwise create it
+if jmx_vals.empty?
+  file '/etc/collectd/plugins/generic_jmx.conf' do
+    action :delete
+    notifies :restart, resources(:service => 'collectd')
+  end
+else
+  template '/etc/collectd/plugins/generic_jmx.conf' do
+    source 'generic_jmx.conf.erb'
+    mode 00644
+    notifies :restart, resources(:service => 'collectd')
+    variables(
+      :jmx_vals => jmx_vals,
+      :jmx_user => secret_data['jmx']['ro_user'],
+      :jmx_password => secret_data['jmx']['ro_password']
+    )
+  end
 end
-

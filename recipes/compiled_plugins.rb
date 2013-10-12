@@ -20,7 +20,7 @@
 # this recipe installs development packages required at
 # compile-time for certain plugins
 
-node[:collectd][:compiled_plugins].each do |plugin|
+node['collectd']['compiled_plugins'].each do |plugin|
   case plugin
   when /postgres/  # cuz everybody spells it different
     if platform_family? 'rhel'
