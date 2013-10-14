@@ -69,13 +69,13 @@ unless platform_family?('rhel') && node.platform_version.to_i < 6
   if curl_data_sources.empty?
     file '/etc/collectd/plugins/curl_json.conf' do
       action :delete
-      notifies :restart, resources(:service => 'collectd')
+      notifies :restart, "service[collectd]"
     end
   else
     template '/etc/collectd/plugins/curl_json.conf' do
       source 'curl_json.conf.erb'
       mode 00644
-      notifies :restart, resources(:service => 'collectd')
+      notifies :restart, "service[collectd]"
       variables(
         :curl_data_sources => curl_data_sources
       )

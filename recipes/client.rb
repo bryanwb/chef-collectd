@@ -20,7 +20,7 @@
 include_recipe 'collectd::default'
 
 servers = []
-search(:node, 'recipes:"collectd::server"') do |n|
+search(:node, 'recipes:collectd\:\:server') do |n|
   servers << n['fqdn']
 end
 
