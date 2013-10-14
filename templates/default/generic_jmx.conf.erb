@@ -42,13 +42,18 @@ PreCacheChain "unquote"
     <% @jmx_vals['mbeans'].each_pair do |mbean, vals| -%>
     <MBean "<%= mbean %>">
       ObjectName "<%= vals['objectname'] %>"
-      InstancePrefix "<%= vals['instanceprefix'] %>"
+      <% if vals['instanceprefix'] -%>InstancePrefix "<%= vals['instanceprefix'] %>"<% end -%>
       <% if vals['instancefrom'] -%>InstanceFrom "<%= vals['instancefrom'] %>"<% end -%>
-      <% vals['values'].each_pair do |attribute, att_vals| -%>
+      <% vals['values'].each do |value| -%>
       <Value>
-        Attribute "<%= attribute %>"
-        <% att_vals.each_pair do |key,val| -%>
-        <% if val == "true" || val == "false" -%><%= key + " " + val %><% else -%><%= key + ' "' + val + '"' %><% end -%>
+        <% value.each_pair do |key,val| -%>
+          <% if key == "attributes" -%>
+            <% val.each do |att| -%>
+          Attribute "<%= att %>"
+            <% end -%>
+          <% else -%>
+          <% if val == "true" || val == "false" -%><%= key + " " + val %><% else -%><%= key + ' "' + val + '"' %><% end -%>
+          <% end -%>
         <% end -%>
       </Value>
       <% end -%>

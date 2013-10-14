@@ -23,7 +23,10 @@ include_recipe 'collectd::jmx_setup'
 secret_data = Chef::EncryptedDataBagItem.load(node['collectd']['encrypted_databag'] , node['collectd']['encrypted_databag_item'])
 
 # load the data bag that includes the ports to use
-ports = data_bag_item('services', 'ports')
+ports_bag = data_bag_item('services', 'ports')
+
+# load the data bag that includes the base tomcat mbeans
+tomcat_bag = data_bag_item('collectd_metrics', '_tomcat')['generic_jmx']['mbeans']
 
 # create the basic structure that will hold the aggregate JMX values of all services on the node
 jmx_vals = {
@@ -31,19 +34,42 @@ jmx_vals = {
   'mbeans' => {}
 }
 
-# attempt to find a JMX data bag item for each role on the node. ignore failures when a role doesn't have a data bag
+# attempt to find a JMX data bag item for each role on the node.
+# ignore failures when a role doesn't have a data bag
 node.roles.each do |role|
 
   # see if the role exists in the ports databag
-  if ports['offset'][role]
+  if ports_bag['offset'][role]
 
     # predefine the structure of the connections section
     jmx_vals['connections'][role] = {}
     jmx_vals['connections'][role]['mbeans'] = []
 
-    # attempt to load a databag with the name of the role.  Rescue because failure is normal
+    # load the base JVM JMX mbeans like heap and gc that every service gets
+    data_bag_item('collectd_metrics', '_jvm')['generic_jmx']['mbeans'].each_pair do |key, val|
+      jmx_vals['mbeans'][key] = val
+      jmx_vals['connections'][role]['mbeans'] << key
+    end
+
+    jmx_vals['connections'][role]['mbeans'].sort!
+
+    # load the base tomcat JMX mbeans, but don't add them to the service since it might not be a tomcat service
+    tomcat_bag.each_pair do |key, val|
+      jmx_vals['mbeans'][key] = val
+    end
+
+
+    # attempt to load a databag with the name of the role.
+    # rescue because failure is normal if additional values aren't defined in a databag item
     begin
       bag = data_bag_item('collectd_metrics', role)['generic_jmx']
+
+      # if the databag specifies this add a tomcat service add the mbeans to the connection block
+      if bag.include?('tomcat') && bag['tomcat']
+        tomcat_bag.each_pair do |key, val|
+          jmx_vals['connections'][role]['mbeans'] << key
+        end
+      end
 
       # if any mbeans are defined in the data bag add them to the single list of mbeans to define
       unless bag['mbeans'].empty?
@@ -55,13 +81,8 @@ node.roles.each do |role|
     rescue Exception=>e
     end
 
-    jmx_vals['connections'][role]['port'] = ports['offset'][role] + ports['range']['jmx']
+    jmx_vals['connections'][role]['port'] = ports_bag['offset'][role] + ports_bag['range']['jmx']
 
-    # load the generic JMX mbeans like heap and gc that every service gets
-    data_bag_item('collectd_metrics', '_generic')['generic_jmx']['mbeans'].each_pair do |key, val|
-      jmx_vals['mbeans'][key] = val
-      jmx_vals['connections'][role]['mbeans'] << key
-    end
   end
 end
 
