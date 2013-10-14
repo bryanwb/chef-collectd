@@ -116,7 +116,8 @@ Author:: Bryan W. Berry (<bryan.berry@gmail.com>)
 Author:: Tim A. Smith (<tsmith84@gmail.com>)  
 Copyright:: 2010, Atari, Inc  
 Copyright:: 2012, Bryan W. Berry  
-Copyright:: 2012-2013, Tim A. Smith
+Copyright:: 2012, Webtrends, Inc.
+Copyright:: 2013, Limelight Networks, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
