@@ -36,7 +36,7 @@ jmx_vals = {
 
 # attempt to find a JMX data bag item for each role on the node.
 # ignore failures when a role doesn't have a data bag
-node.roles.each do |role|
+node['roles'].each do |role|
 
   # see if the role exists in the ports databag
   if ports_bag['offset'][role]

@@ -47,14 +47,14 @@ directory '/etc/collectd/plugins' do
   recursive true
 end
 
-directory node[:collectd][:base_dir] do
+directory node['collectd']['base_dir'] do
   owner 'root'
   group 'root'
   mode 00755
   recursive true
 end
 
-directory node[:collectd][:plugin_dir] do
+directory node['collectd']['plugin_dir'] do
   owner 'root'
   group 'root'
   mode 00755

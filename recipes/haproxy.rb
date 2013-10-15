@@ -21,7 +21,7 @@
 # if, not fail loudly
 ruby_block "check collectd's python support" do
   block do
-    unless ::File.exists? "#{node[:collectd][:plugin_dir]}/python.so"
+    unless ::File.exists? "#{node['collectd']['plugin_dir']}/python.so"
       Chef::Application.fatal!('collectd does not have python support compiled in. Fix it doofus.')
     end
   end
@@ -64,7 +64,7 @@ if node['platform_version'] == '12.04'
 end
 
 
-template "#{node[:collectd][:plugin_dir]}/haproxy.py" do
+template "#{node['collectd']['plugin_dir']}/haproxy.py" do
   source 'haproxy.py.erb'
   mode 00755
   variables(

@@ -18,7 +18,7 @@
 #
 
 # libyajl-dev doesn't exist on centos before 6.  This recipe won't work
-unless platform_family?('rhel') && node.platform_version.to_i < 6
+unless platform_family?('rhel') && node['platform_version'].to_i < 6
 
   package 'libyajl-dev' do
     action :install
@@ -32,7 +32,7 @@ unless platform_family?('rhel') && node.platform_version.to_i < 6
 
   # attempt to find a curl_json data bag item for each role on the node. ignore
   # failures.
-  node.roles.each do |role|
+  node['roles'].each do |role|
 
     # skip this role if it doesn't have a port
     next unless ports['offset'][role]

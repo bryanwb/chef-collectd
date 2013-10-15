@@ -39,7 +39,7 @@ define :collectd_python_plugin, :options => {}, :module => nil, :path => nil do
     t = resources(:template => '/etc/collectd/plugins/python.conf')
   rescue ArgumentError
     collectd_plugin 'python' do
-      options :paths=>[node[:collectd][:plugin_dir]], :modules=>{}
+      options :paths=>[node['collectd']['plugin_dir']], :modules=>{}
       template 'python_plugin.conf.erb'
       cookbook 'collectd'
     end
