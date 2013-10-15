@@ -87,7 +87,7 @@ node['roles'].each do |role|
 end
 
 # if we didn't find any jmx services on the node then delete the plugin config, otherwise create it
-if jmx_vals.empty?
+if jmx_vals['connections'].empty?
   file '/etc/collectd/plugins/generic_jmx.conf' do
     action :delete
     notifies :restart, "service[collectd]"

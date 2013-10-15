@@ -37,14 +37,14 @@ unless platform_family?('rhel') && node['platform_version'].to_i < 6
     # skip this role if it doesn't have a port
     next unless ports['offset'][role]
 
-    # predefine the structure of the connections section
-    curl_data_sources[role] = {}
-    curl_data_sources[role]['metrics'] = []
-
     # attempt to load a databag with the name of the role.  Rescue because
     # failure is normal
     begin
       bag = data_bag_item('collectd_metrics', role)['curl_json']
+
+      # predefine the structure of the connections section
+      curl_data_sources[role] = {}
+      curl_data_sources[role]['metrics'] = []
 
       # if any mbeans are defined in the data bag add them to the single list
       # of mbeans to define
