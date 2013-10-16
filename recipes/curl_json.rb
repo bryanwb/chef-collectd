@@ -38,44 +38,35 @@ unless platform_family?('rhel') && node['platform_version'].to_i < 6
     next unless ports['offset'][role]
 
     # attempt to load a databag with the name of the role.  Rescue because
-    # failure is normal
+    # failure is normal if a customer metrics databag item hasn't been created
     begin
-      bag = data_bag_item('collectd_metrics', role)['curl_json']
+      # only add to curl_data_sources if there was curl_json items in the data bag item
+      if (bag = data_bag_item('collectd_metrics', role)['curl_json'])
+        # predefine the structure of the connections section
+        curl_data_sources[role] = {}
+        curl_data_sources[role]['metrics'] = []
 
-      # predefine the structure of the connections section
-      curl_data_sources[role] = {}
-      curl_data_sources[role]['metrics'] = []
-
-      # if any mbeans are defined in the data bag add them to the single list
-      # of mbeans to define
-      port = bag['port'] || (ports['offset'][role] + ports['range']['tomcat'])
-      url_suffix = bag['url_suffix'] || DEFAULT_URL_SUFFIX.dup
-      curl_data_sources[role]['url'] = 'http://localhost:' << port.to_s << url_suffix
-      curl_data_sources[role]['metrics'] = bag['metrics'] if (bag['metrics'])
+        # if any mbeans are defined in the data bag add them to the single list
+        # of mbeans to define
+        port = bag['port'] || (ports['offset'][role] + ports['range']['tomcat'])
+        url_suffix = bag['url_suffix'] || DEFAULT_URL_SUFFIX.dup
+        curl_data_sources[role]['url'] = 'http://localhost:' << port.to_s << url_suffix
+        curl_data_sources[role]['metrics'] = bag['metrics'] if (bag['metrics'])
+      end
     rescue Exception=>e
     end
-
-      # right now there are no generic metrics, so skip all of this
-
-      #curl_data_sources['connections'][role]['port'] = ports['offset'][role] + ports['range']['jmx']
-
-      # load the generic JMX mbeans like heap and gc that every service gets
-      #data_bag_item('curl_json_metrics', '_generic')['mbeans'].each_pair do |key,val|
-      #  curl_data_sources['mbeans'][key] = val
-      #  curl_data_sources['connections'][role]['mbeans'] << key
-      #end
   end
 
   if curl_data_sources.empty?
     file '/etc/collectd/plugins/curl_json.conf' do
       action :delete
-      notifies :restart, "service[collectd]"
+      notifies :restart, 'service[collectd]'
     end
   else
     template '/etc/collectd/plugins/curl_json.conf' do
       source 'curl_json.conf.erb'
       mode 00644
-      notifies :restart, "service[collectd]"
+      notifies :restart, 'service[collectd]'
       variables(
         :curl_data_sources => curl_data_sources
       )
