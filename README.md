@@ -56,13 +56,39 @@ The [collectd_plugins](#) cookbook is not required, but provides many common plu
 
 # USAGE #
 
-Three main recipes are provided:
+###collectd::default### 
+This recipe installs the collectd daemon.
 
-* `collectd::default` - Installs the collectd daemon
-* `collectd::client` - Install collectd and configure it to send data to a server.
-* `collectd::server` - Install collectd and configure it to recieve data from clients.
+###collectd::client###
+This recipe installs collectd and configures it to send data to a server.  This recipe uses search to find the collectd server.
 
-The client recipe will use the search index to automatically locate the server hosts, so no manual configuration is required.
+###collectd::server###
+This recipe installs collectd and configures it to recieve data from clients.
+
+###collectd::base_plugins###
+This recipe enables all plugins listed in node['collectd']['base_plugins'].  This defaults to cpu, interface, load, memory, network, df, and disk.
+
+###collectd::graphite###
+This recipe enables the write_graphite plugin.  There are several graphite specific attributes listed above in the full list of attributes.  You'll most likely need to modify these to get the desired graphite output.
+
+###collectd::syslog###
+This recipe enables the syslog plugin and logs at the logging level defined in node['collectd']['syslog']['log_level']
+
+###collectd::apache2###
+This recipe enables the apache2 plugin polling mod_status data from http://localhost/server-status?auto
+
+###collectd::nginx###
+This recipe enables the ngninx plugin polling mod_status data from http://127.0.0.1/nginx_status
+
+###collectd::sensors###
+This recipe enables the sensors plugin. This recipe will perform no actions on virtualized systems or systems running in EC2
+
+###collectd::haproxy###
+This recipe enables the haproxy plugin and polls from the stats socket file defined at node['collectd']['haproxy']['stats_socket'].  This plugin requires that collectd have been compiled with python support.
+
+###collectd::memcached###
+This recipe enables the memcached plugin and polls data from the memcached instance on port 11211 of the loca system
+
 
 ## Defines ##
 
@@ -113,11 +139,11 @@ component, so be sure to configure the node with the correct recipes.
 
 Author:: Noah Kantrowitz (<noah@coderanger.net>)  
 Author:: Bryan W. Berry (<bryan.berry@gmail.com>)  
-Author:: Tim A. Smith (<tsmith84@gmail.com>)  
+Author:: Tim A. Smith (<tsmith@limelight.com>)  
 Copyright:: 2010, Atari, Inc  
 Copyright:: 2012, Bryan W. Berry  
-Copyright:: 2012, Webtrends, Inc.
-Copyright:: 2013, Limelight Networks, Inc.
+Copyright:: 2012, Webtrends, Inc.  
+Copyright:: 2013, Limelight Networks, Inc.  
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
