@@ -90,13 +90,13 @@ end
 if jmx_vals['connections'].empty?
   file '/etc/collectd/plugins/generic_jmx.conf' do
     action :delete
-    notifies :restart, "service[collectd]"
+    notifies :restart, 'service[collectd]'
   end
 else
   template '/etc/collectd/plugins/generic_jmx.conf' do
     source 'generic_jmx.conf.erb'
     mode 00644
-    notifies :restart, "service[collectd]"
+    notifies :restart, 'service[collectd]'
     variables(
       :jmx_vals => jmx_vals,
       :jmx_user => secret_data['jmx']['ro_user'],
