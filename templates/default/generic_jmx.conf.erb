@@ -49,10 +49,10 @@ PreCacheChain "unquote"
         <% value.each_pair do |key,val| -%>
           <% if key == "attributes" -%>
             <% val.each do |att| -%>
-          Attribute "<%= att %>"
+        Attribute "<%= att %>"
             <% end -%>
           <% else -%>
-          <% if val == "true" || val == "false" -%><%= key + " " + val %><% else -%><%= key + ' "' + val + '"' %><% end -%>
+        <% if val == "true" || val == "false" -%><%= key + " " + val %><% else -%><%= key + ' "' + val + '"' %><% end -%>
           <% end -%>
         <% end -%>
       </Value>
