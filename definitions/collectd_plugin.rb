@@ -19,33 +19,33 @@
 
 define :collectd_plugin, :options => {}, :template => nil, :cookbook => nil do
   template "/etc/collectd/plugins/#{params[:name]}.conf" do
-    owner "root"
-    group "root"
+    owner 'root'
+    group 'root'
     mode 00644
     if params[:template].nil?
-      source "plugin.conf.erb"
-      cookbook params[:cookbook] || "collectd"
+      source 'plugin.conf.erb'
+      cookbook params[:cookbook] || 'collectd'
     else
       source params[:template]
       cookbook params[:cookbook]
     end
-    variables :name=>params[:name], :options=>params[:options]
-    notifies :restart, "service[collectd]"
+    variables :name => params[:name], :options => params[:options].sort_by { |k, v| k.to_s }
+    notifies :restart, 'service[collectd]'
   end
 end
 
 define :collectd_python_plugin, :options => {}, :module => nil, :path => nil do
   begin
-    t = resources(:template => "/etc/collectd/plugins/python.conf")
+    t = resources(:template => '/etc/collectd/plugins/python.conf')
   rescue ArgumentError
-    collectd_plugin "python" do
-      options :paths=>[node[:collectd][:plugin_dir]], :modules=>{}
-      template "python_plugin.conf.erb"
-      cookbook "collectd"
+    collectd_plugin 'python' do
+      options :paths => [node['collectd']['plugin_dir']], :modules => {}
+      template 'python_plugin.conf.erb'
+      cookbook 'collectd'
     end
     retry
   end
-  if not params[:path].nil?
+  unless params[:path].nil?
     t.variables[:options][:paths] << params[:path]
   end
   t.variables[:options][:modules][params[:module] || params[:name]] = params[:options]

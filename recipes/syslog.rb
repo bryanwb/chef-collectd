@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: collectd
-# Recipe:: server
+# Recipe:: syslog
 #
-# Copyright 2010, Atari, Inc
+# Copyright 2013, Tim Smith
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,8 +17,9 @@
 # limitations under the License.
 #
 
-include_recipe 'collectd'
+# This recipe installs the most frequently used plugins without
+# any special configuration
 
-collectd_plugin 'network' do
-  options :listen => '0.0.0.0'
+collectd_plugin 'syslog' do
+  options :LogLevel => node['collectd']['syslog']['log_level']
 end

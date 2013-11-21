@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: collectd
-# Recipe:: server
+# Recipe:: sensors
 #
-# Copyright 2010, Atari, Inc
+# Copyright 2013, Limelight Networks, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,8 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe 'collectd'
-
-collectd_plugin 'network' do
-  options :listen => '0.0.0.0'
+# install the sensors cookbook if not on a VM or on EC2
+unless node['ec2'] && node['virtualization']['role']
+  collectd_plugin 'sensors'
 end

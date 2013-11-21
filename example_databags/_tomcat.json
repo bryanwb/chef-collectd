@@ -1,0 +1,64 @@
+{
+  "id": "_tomcat",
+  "generic_jmx": {
+    "mbeans": {
+      "catalina/global_request_processor": {
+        "objectname": "Catalina:type=GlobalRequestProcessor,*",
+        "instanceprefix": "request_processor-",
+        "instancefrom": "name",
+        "values": [
+          {
+            "Type": "io_octets",
+            "Table": "false",
+            "InstancePrefix": "global",
+            "attributes": [
+              "bytesReceived",
+              "bytesSent"
+            ]
+          },
+          {
+            "Type": "total_requests",
+            "Table": "false",
+            "InstancePrefix": "global-processing",
+            "attributes": [
+              "requestCount"
+            ]
+          },
+          {
+            "Type": "total_time_in_ms",
+            "Table": "false",
+            "InstancePrefix": "global",
+            "attributes": [
+              "processingTime"
+            ]
+          }
+        ]
+      },
+      "catalina/thread_pool": {
+        "objectname": "Catalina:type=ThreadPool,*",
+        "instanceprefix": "request_processor-",
+        "instancefrom": "name",
+        "values": [
+          {
+            "Type": "threads",
+            "Table": "false",
+            "InstancePrefix": "total",
+            "InstanceFrom": "name",
+            "attributes": [
+              "currentThreadCount"
+            ]
+          },
+          {
+            "Type": "threads",
+            "Table": "false",
+            "InstancePrefix": "running",
+            "InstanceFrom": "name",
+            "attributes": [
+              "currentThreadsBusy"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

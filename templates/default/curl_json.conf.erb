@@ -1,0 +1,14 @@
+LoadPlugin 'curl_json'
+<Plugin curl_json>
+  <% @curl_data_sources.each_pair do |role, data| -%>
+  <% next unless data['url'] -%>
+  <URL "<%= data['url'] %>">
+    Instance "<%= role %>"
+    <% data['metrics'].each do |metric| -%>
+    <Key "<%= metric['json_key'] %>">
+      Type "<%= metric['collectd_type'] || 'gauge' %>"
+    </Key>
+    <% end -%>
+  </URL>
+  <% end -%>
+</Plugin>

@@ -1,9 +1,7 @@
 LoadPlugin "java"
 TypesDB "/etc/collectd/plugins/generic_jmx_types.db"
 
-<% if @tomcat == true -%>
-# all this to get rid of extra quotes that 
-# the tomcat mbean passes
+# all this to get rid of extra quotes that the tomcat mbean passes
 LoadPlugin "match_regex"
 LoadPlugin "target_replace"
 PreCacheChain "unquote"
@@ -26,190 +24,56 @@ PreCacheChain "unquote"
     </Target>
   </Rule>
 </Chain>
-<% end -%>
 
 <Plugin "java">
   JVMArg "-verbose:jni"
+  <% if node['collectd']['install_method'] == "package" -%>
+  JVMArg "-Djava.class.path=/usr/share/collectd/java/collectd-api.jar:/usr/share/collectd/java/generic-jmx.jar"
+  <% else -%>
   JVMArg "-Djava.class.path=/opt/collectd/bindings/java/.libs/collectd-api.jar:/opt/collectd/bindings/java/.libs/generic-jmx.jar"
+  <% end -%>
   LoadPlugin "org.collectd.java.GenericJMX"
 
   <Plugin "GenericJMX">
-    # Memory usage by memory pool.
-    <MBean "memory_pool">
-      ObjectName "java.lang:type=MemoryPool,*"
-      InstancePrefix "memory_pool-"
-      InstanceFrom "name"
+
+    ################
+    # MBean blocks #
+    ################
+    <% @jmx_vals['mbeans'].each_pair do |mbean, vals| -%>
+    <MBean "<%= mbean %>">
+      ObjectName "<%= vals['objectname'] %>"
+      <% if vals['instanceprefix'] -%>InstancePrefix "<%= vals['instanceprefix'] %>"<% end -%>
+      <% if vals['instancefrom'] -%>InstanceFrom "<%= vals['instancefrom'] %>"<% end -%>
+      <% vals['values'].each do |value| -%>
       <Value>
-        Type "memory"
-        #InstancePrefix ""
-        #InstanceFrom ""
-        Table true
-        Attribute "Usage"
+        <% value.each_pair do |key,val| -%>
+          <% if key == "attributes" -%>
+            <% val.each do |att| -%>
+        Attribute "<%= att %>"
+            <% end -%>
+          <% else -%>
+        <% if val == "true" || val == "false" -%><%= key + " " + val %><% else -%><%= key + ' "' + val + '"' %><% end -%>
+          <% end -%>
+        <% end -%>
       </Value>
-    </MBean>
-
-# Heap memory usage
-   <MBean "memory_heap">
-           ObjectName "java.lang:type=Memory"
-           #InstanceFrom ""
-             InstancePrefix "memory-heap"
-
-           # Creates four values: committed, init, max, used
-           <Value>
-               Type "jmx_memory"
-                #InstancePrefix ""
-                #InstanceFrom ""
-                Table true
-                Attribute "HeapMemoryUsage"
-           </Value>
-   </MBean>
-
-# Non-heap memory usage
-<MBean "memory_nonheap">
-  ObjectName "java.lang:type=Memory"
-  #InstanceFrom ""
-  InstancePrefix "memory-nonheap"
-
-  # Creates four values: committed, init, max, used
-  <Value>
-    Type "jmx_memory"
-    #InstancePrefix ""
-    #InstanceFrom ""
-    Table true
-    Attribute "NonHeapMemoryUsage"
-  </Value>
-</MBean>
-
-
-<MBean "garbage_collector">
-  ObjectName "java.lang:type=GarbageCollector,*"
-  InstancePrefix "gc-"
-  InstanceFrom "name"
-
-  <Value>
-    Type "invocations"
-    InstancePrefix ""
-    #InstanceFrom ""
-    Table false
-    Attribute "CollectionCount"
-  </Value>
-
-  <Value>
-    Type "total_time_in_ms"
-    InstancePrefix "collection_time"
-    #InstanceFrom ""
-    Table false
-    Attribute "CollectionTime"
-  </Value>
-
- </MBean>
-
-    <MBean "classes">
-      ObjectName "java.lang:type=ClassLoading"
-      InstancePrefix "classes"
-      #InstanceFrom ""
-
-      <Value>
-        Type "gauge"
-        InstancePrefix "loaded_classes"
-        #InstanceFrom ""
-        Table false
-        Attribute "LoadedClassCount"
-      </Value>
-    </MBean>
-
-    # Time spent by the JVM compiling or optimizing.
-    <MBean "compilation">
-      ObjectName "java.lang:type=Compilation"
-      InstancePrefix "compilation"
-      #InstanceFrom ""
-
-      <Value>
-        Type "total_time_in_ms"
-        InstancePrefix "compilation_time"
-        #InstanceFrom ""
-        Table false
-        Attribute "TotalCompilationTime"
-      </Value>
-    </MBean>
-
-
-    
-<% if @tomcat == true -%>
-
-    <MBean "catalina/global_request_processor">
-      ObjectName "Catalina:type=GlobalRequestProcessor,*"
-      InstancePrefix "request_processor-"
-      InstanceFrom "name"
-
-      <Value>
-        Type "io_octets"
-        InstancePrefix "global"
-        #InstanceFrom ""
-        Table false
-        Attribute "bytesReceived"
-        Attribute "bytesSent"
-      </Value>
-
-      <Value>
-        Type "total_requests"
-        InstancePrefix "global"
-        #InstanceFrom ""
-        Table false
-        Attribute "requestCount"
-      </Value>
-
-      <Value>
-        Type "total_time_in_ms"
-        InstancePrefix "global-processing"
-        #InstanceFrom ""
-        Table false
-        Attribute "processingTime"
-      </Value>
-    </MBean>
-
-<MBean "catalina/thread_pool">
-  ObjectName "Catalina:type=ThreadPool,*"
-  InstancePrefix "request_processor-"
-  InstanceFrom "name"
-
-  <Value>
-    Type "threads"
-    InstancePrefix "total"
-    InstanceFrom "name"
-    Table false
-    Attribute "currentThreadCount"
-  </Value>
-
-  <Value>
-    Type "threads"
-    InstancePrefix "running"
-    InstanceFrom "name"
-    Table false
-    Attribute "currentThreadsBusy"
-  </Value>
-</MBean>
-
-<% end -%>
-
-    <Connection>
-      Host "<%= node[:fqdn] %>"
-      <% unless @jvm_name.empty? -%>
-      InstancePrefix "<%= @jvm_name %>-"
       <% end -%>
-      ServiceURL "service:jmx:rmi:///jndi/rmi://localhost:<%= @port %>/jmxrmi"
-      Collect "memory_pool"
-      Collect "memory_heap"
-      Collect "memory_nonheap"
-<% if @tomcat == true -%>
-      Collect "catalina/global_request_processor"
-      Collect "catalina/thread_pool"
-<% end -%>
-      Collect "garbage_collector"
-      Collect "compilation"
-      Collect "classes"
-      User "<%= @user %>"
-      Password "<%= @password %>"
+    </MBean>
+    <% end -%>
+
+    #######################
+    # Connection block(s) #
+    #######################
+    <% @jmx_vals['connections'].each_pair do |service, vals| -%>
+    <Connection>
+      Host "<%= node['fqdn'] %>"
+      InstancePrefix "<%= service %>_"
+      ServiceURL "service:jmx:rmi:///jndi/rmi://localhost:<%= vals['port'] %>/jmxrmi"
+      <% vals['mbeans'].each do |mbean| -%>
+      Collect "<%= mbean %>"
+      <% end -%>
+      User "<%= @jmx_user %>"
+      Password "<%= @jmx_password %>"
     </Connection>
+    <% end -%>
   </Plugin>
 </Plugin>

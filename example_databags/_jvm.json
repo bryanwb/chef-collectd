@@ -1,0 +1,113 @@
+{
+  "id": "_jvm",
+  "generic_jmx": {
+    "mbeans": {
+      "jvm_memory_pool": {
+        "objectname": "java.lang:type=MemoryPool,*",
+        "instanceprefix": "jvm_memory_pool-",
+        "instancefrom": "name",
+        "values": [
+          {
+            "attributes": [
+              "Usage"
+            ],
+            "Table": "true",
+            "Type": "memory"
+          }
+        ]
+      },
+      "jvm_memory-heap": {
+        "objectname": "java.lang:type=Memory",
+        "instanceprefix": "memory-heap",
+        "instancefrom": null,
+        "values": [
+          {
+            "attributes": [
+              "HeapMemoryUsage"
+            ],
+            "Table": "true",
+            "Type": "memory"
+          }
+        ]
+      },
+      "jvm_memory_nonheap": {
+        "objectname": "java.lang:type=Memory",
+        "instanceprefix": "memory-nonheap",
+        "instancefrom": null,
+        "values": [
+          {
+            "attributes": [
+              "NonHeapMemoryUsage"
+            ],
+            "table": "true",
+            "type": "memory"
+          }
+        ]
+      },
+      "jvm_threads": {
+        "objectname": "java.lang:type=Threading",
+        "instanceprefix": "jvm_thread_count",
+        "instancefrom": null,
+        "values": [
+          {
+            "attributes": [
+              "ThreadCount"
+            ],
+            "type": "threads"
+          }
+        ]
+      },
+      "jvm_classes": {
+        "objectname": "java.lang:type=ClassLoading",
+        "instanceprefix": "jvm_loaded_classes",
+        "instancefrom": null,
+        "values": [
+          {
+            "attributes": [
+              "LoadedClassCount"
+            ],
+            "Type": "gauge",
+            "InstancePrefix": "loaded_classes",
+            "Table": "false"
+          }
+        ]
+      },
+      "jvm_garbage_collector": {
+        "objectname": "java.lang:type=GarbageCollector,*",
+        "instanceprefix": "jvm_gc-",
+        "instancefrom": "name",
+        "values": [
+          {
+            "attributes": [
+              "CollectionCount"
+            ],
+            "Table": "false",
+            "InstancePrefix": "collection_count",
+            "Type": "invocations"
+          },
+          {
+            "attributes": [
+              "CollectionTime"
+            ],
+            "Table": "false",
+            "InstancePrefix": "collection_time",
+            "Type": "total_time_in_ms"
+          }
+        ]
+      },
+      "jvm_uptime": {
+        "objectname": "java.lang:type=Runtime",
+        "instanceprefix": "jvm_uptime",
+        "instancefrom": null,
+        "values": [
+          {
+            "attributes": [
+              "Uptime"
+            ],
+            "Type": "uptime"
+          }
+        ]
+      }
+    }
+  }
+}
