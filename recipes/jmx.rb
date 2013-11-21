@@ -78,7 +78,7 @@ node['roles'].each do |role|
           jmx_vals['connections'][role]['mbeans'] << key
         end
       end
-    rescue Exception=>e
+    rescue
     end
 
     jmx_vals['connections'][role]['port'] = ports_bag['offset'][role] + ports_bag['range']['jmx']

@@ -53,7 +53,7 @@ unless platform_family?('rhel') && node['platform_version'].to_i < 6
         curl_data_sources[role]['url'] = 'http://localhost:' << port.to_s << url_suffix
         curl_data_sources[role]['metrics'] = bag['metrics'] if (bag['metrics'])
       end
-    rescue Exception=>e
+    rescue
     end
   end
 
