@@ -18,7 +18,7 @@
 #
 
 def collectd_key(option)
-  return option.to_s.split('_').map{|x| x.capitalize}.join if option.instance_of?(Symbol)
+  return option.to_s.split('_').map { |x| x.capitalize }.join if option.instance_of?(Symbol)
   option
 end
 
@@ -27,7 +27,7 @@ def collectd_option(option)
   "\"#{option}\""
 end
 
-def collectd_settings(options, level=0)
+def collectd_settings(options, level = 0)
   indent = '  ' * level
   output = []
   options.each_pair do |key, value|
@@ -37,7 +37,7 @@ def collectd_settings(options, level=0)
       end
     elsif value.is_a? Hash
       value.each_pair do |name, suboptions|
-        output << "#{indent}<#{key} \"#{name}\">\n#{collectd_settings(suboptions, level+1)}\n#{indent}</#{key}>"
+        output << "#{indent}<#{key} \"#{name}\">\n#{collectd_settings(suboptions, level + 1)}\n#{indent}</#{key}>"
       end
     else
       output << "#{indent}#{collectd_key(key)} #{collectd_option(value)}"

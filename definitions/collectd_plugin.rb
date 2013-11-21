@@ -29,7 +29,7 @@ define :collectd_plugin, :options => {}, :template => nil, :cookbook => nil do
       source params[:template]
       cookbook params[:cookbook]
     end
-    variables :name=>params[:name], :options=>params[:options].sort_by {|k,v| k.to_s }
+    variables :name => params[:name], :options => params[:options].sort_by { |k, v| k.to_s }
     notifies :restart, 'service[collectd]'
   end
 end
@@ -39,7 +39,7 @@ define :collectd_python_plugin, :options => {}, :module => nil, :path => nil do
     t = resources(:template => '/etc/collectd/plugins/python.conf')
   rescue ArgumentError
     collectd_plugin 'python' do
-      options :paths=>[node['collectd']['plugin_dir']], :modules=>{}
+      options :paths => [node['collectd']['plugin_dir']], :modules => {}
       template 'python_plugin.conf.erb'
       cookbook 'collectd'
     end
